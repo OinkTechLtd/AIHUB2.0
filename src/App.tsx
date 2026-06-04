@@ -175,6 +175,13 @@ export default function App() {
       return true;
     })
     .sort((a, b) => {
+      // First, always rank priority items (CoderGoAI, TatNet, GigaCode, Russian AI Map) at the top!
+      const prioA = a.isPriority ? 1 : 0;
+      const prioB = b.isPriority ? 1 : 0;
+      if (prioA !== prioB) {
+        return prioB - prioA;
+      }
+
       if (sortBy === 'alphabet') {
         return a.name.localeCompare(b.name);
       }
@@ -209,7 +216,7 @@ export default function App() {
               <Terminal className="w-3.5 h-3.5" /> GHA CRAWLER
             </span>
             <span className="font-mono">
-              Поисковый робот <code className="text-slate-100">update_ai_list.py</code> запускается по крону в <b>08:00</b> и <b>20:00</b> UTC.
+              Поисковый робот <code className="text-slate-100">update_ai_list.py</code> запускается по крону <b>каждые 6 часов</b> UTC (с обходом капчи и блокировок через BuxarParser).
             </span>
           </div>
 

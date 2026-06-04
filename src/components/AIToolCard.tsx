@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Star, ArrowUpRight, CheckCircle2, AlertTriangle, XCircle, RefreshCw, Zap } from 'lucide-react';
+import { Star, ArrowUpRight, CheckCircle2, AlertTriangle, XCircle, RefreshCw, Zap, Code, FileText, Sparkles, Palette, Video, Rocket, Calendar } from 'lucide-react';
 import { AITool } from '../types';
 
 interface AIToolCardProps {
@@ -11,11 +11,23 @@ interface AIToolCardProps {
 }
 
 const categoryColors: Record<string, string> = {
-  'AI-кодинг': 'bg-blue-50 text-blue-700 border-blue-100',
-  'Генерация текста': 'bg-emerald-50 text-emerald-700 border-emerald-100',
-  'Нейросети': 'bg-purple-50 text-purple-700 border-purple-100',
-  'Стартапы': 'bg-amber-50 text-amber-700 border-amber-100',
+  'код': 'bg-blue-50 text-blue-700 border-blue-100',
+  'текст': 'bg-cyan-50 text-cyan-800 border-cyan-100',
+  'генерация': 'bg-emerald-50 text-emerald-700 border-emerald-100',
+  'дизайн': 'bg-purple-50 text-purple-700 border-purple-100',
+  'видео': 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-100',
+  'стартап': 'bg-amber-50 text-amber-700 border-amber-100',
   'Праздники': 'bg-rose-50 text-rose-700 border-rose-100 border-dashed animate-pulse',
+};
+
+const categoryIcons: Record<string, any> = {
+  'код': Code,
+  'текст': FileText,
+  'генерация': Sparkles,
+  'дизайн': Palette,
+  'видео': Video,
+  'стартап': Rocket,
+  'Праздники': Calendar,
 };
 
 const sourceLabels: Record<string, string> = {
@@ -28,6 +40,7 @@ const sourceLabels: Record<string, string> = {
 
 export default function AIToolCard({ tool, isFavorite, onToggleFavorite, statusUrlCheck }: AIToolCardProps) {
   const status = statusUrlCheck || (tool.working ? 'working' : 'offline');
+  const IconComponent = categoryIcons[tool.category] || Sparkles;
 
   return (
     <motion.div
@@ -37,25 +50,43 @@ export default function AIToolCard({ tool, isFavorite, onToggleFavorite, statusU
       exit={{ opacity: 0, y: -15 }}
       transition={{ duration: 0.3 }}
       id={`tool-card-${tool.id}`}
-      className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between relative overflow-hidden"
+      className={`bg-white rounded-2xl border p-6 shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col justify-between relative overflow-hidden ${
+        tool.isPriority 
+          ? 'border-blue-200 bg-gradient-to-b from-blue-50/20 to-white' 
+          : 'border-slate-100'
+      }`}
     >
-      {/* Decorative top-border or highlight for Holiday / New tools */}
+      {/* Decorative top-border or highlight for Holiday / New / Priority tools */}
       {tool.isHoliday && (
         <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-500 via-emerald-500 to-red-500" />
       )}
-      {tool.isNew && !tool.isHoliday && (
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-500" />
+      {tool.isPriority && !tool.isHoliday && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 via-indigo-500 to-blue-400" />
+      )}
+      {tool.isNew && !tool.isHoliday && !tool.isPriority && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-teal-500 to-cyan-500" />
       )}
 
       <div>
         {/* Header: Badges & Favorite */}
         <div className="flex items-center justify-between mb-4">
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${categoryColors[tool.category] || 'bg-slate-50 text-slate-700 border-slate-100'}`}>
-              {tool.category}
+          <div className="flex flex-wrap gap-1.5 items-center">
+            <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full border flex items-center gap-1 ${categoryColors[tool.category] || 'bg-slate-50 text-slate-700 border-slate-100'}`}>
+              <IconComponent className="w-3.5 h-3.5 shrink-0" />
+              <span>{tool.category}</span>
             </span>
-            {tool.isNew && (
-              <span className="bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-0.5 shadow-sm">
+            {tool.isRussian && (
+              <span className="bg-red-50 text-red-700 border border-red-100 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1.5 shadow-xs">
+                <span>🇷🇺 РФ-проект</span>
+              </span>
+            )}
+            {tool.isPriority && (
+              <span className="bg-blue-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                🔥 TOP
+              </span>
+            )}
+            {tool.isNew && !tool.isPriority && (
+              <span className="bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded flex items-center gap-0.5">
                 <Zap className="w-3 h-3 fill-current" /> NEW
               </span>
             )}
@@ -85,13 +116,18 @@ export default function AIToolCard({ tool, isFavorite, onToggleFavorite, statusU
           <h3 className="font-bold text-lg text-slate-900 tracking-tight flex items-center gap-1.5 hover:text-blue-600 transition-colors">
             {tool.name}
           </h3>
-          <span className="font-mono text-[10px] uppercase text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
-            Источник: {sourceLabels[tool.source] || tool.source}
-          </span>
+          <div className="flex items-center gap-2 mt-1">
+            <span className="font-mono text-[9px] uppercase text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
+              Источник: {sourceLabels[tool.source] || tool.source}
+            </span>
+            <span className="text-[10px] text-slate-400">
+              Добавлено: {tool.addedDate}
+            </span>
+          </div>
         </div>
 
         {/* Description */}
-        <p className="text-sm text-slate-600 line-clamp-3 mb-6 font-sans leading-relaxed">
+        <p className="text-sm text-slate-650 line-clamp-3 mb-6 font-sans leading-relaxed">
           {tool.description}
         </p>
       </div>
