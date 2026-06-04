@@ -1,5 +1,19 @@
 [
   {
+  "tools": [
+    {
+      "name": "CoderGoAI",
+      "url": "https://coder-goai.lovable.app",
+      "category": "Программисту",
+      "description": "ИИ-агент для автоматической генерации и рефакторинга кода через задачи на русском языке",
+      "region": "Россия",
+      "source": "manual",
+      "status": "online"
+    }
+  ],
+  "last_updated": "2026-06-05T00:00:00"
+}
+  {
     "id": "cursor",
     "name": "Cursor AI Editor",
     "description": "Полноценный AI-редактор кода, форк VS Code со встроенной поддержкой современных моделей Gemini и Claude.",
