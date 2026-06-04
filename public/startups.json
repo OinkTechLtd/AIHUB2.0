@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "title": "TatNet Search AI",
+    "description": "Новый татарский поисковый AI-ассистент, оптимизированный под локальную культуру, язык и информационные ресурсы региона.",
+    "url": "https://tatnet.ai/search",
+    "source": "TatNet",
+    "addedDate": "2026-06-01"
+  },
+  {
+    "id": "2",
+    "title": "Kazan LLM (v3.0)",
+    "description": "Первая двуязычная ИИ-модель, специально дообученная на корпусах фольклора, технических текстов и новостных порталов.",
+    "url": "https://github.com/tatnet-ai/kazan-llm",
+    "source": "GitHub",
+    "addedDate": "2026-05-28"
+  },
+  {
+    "id": "3",
+    "title": "OmniParser v2",
+    "description": "Агент для браузерного управления сайтами. Преобразует скриншоты в интерактивные структурированные селекторы.",
+    "url": "https://github.com/microsoft/OmniParser",
+    "source": "GitHub",
+    "addedDate": "2026-05-15"
+  },
+  {
+    "id": "4",
+    "title": "Sвияжск AI Helper",
+    "description": "Интеллектуальный туристический гид по острову-граду Свияжск с распознаванием исторических памятников по фото.",
+    "url": "https://sviyazhsk.tatnet.ru",
+    "source": "TatNet",
+    "addedDate": "2026-04-10"
+  },
+  {
+    "id": "5",
+    "title": "STT TatSpeech Expert",
+    "description": "Сверхбыстрая легковесная модель распознавания речи для интеграции в умные дома и голосовые системы на TatNet.",
+    "url": "https://tatspeech.tatnet.org",
+    "source": "TatNet",
+    "addedDate": "2026-03-22"
+  }
+]

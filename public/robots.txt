@@ -1,0 +1,9 @@
+# robots.txt for AI HUB 2.0 (Google & Yandex Search Optimization)
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Point to host and sitemap
+Sitemap: https://ai-hub.tatnet.ai/sitemap.xml
+Host: https://ai-hub.tatnet.ai
