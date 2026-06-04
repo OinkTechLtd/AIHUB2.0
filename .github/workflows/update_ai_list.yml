@@ -2,8 +2,8 @@ name: Update AI Tools & Startups List
 
 on:
   schedule:
-    # Runs at 08:00 and 20:00 UTC every single day
-    - cron: '0 8,20 * * *'
+    # Runs once every 6 hours (00:00, 06:00, 12:00, 18:00) UTC
+    - cron: '0 */6 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
 permissions:
