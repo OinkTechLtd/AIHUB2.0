@@ -16,8 +16,16 @@
   --color-dark-900: #030712;
 }
 
+@variant dark (&:where(.dark, .dark *));
+
 body {
   font-family: var(--font-sans);
   background-color: #f8fafc;
   color: #0f172a;
+  transition: background-color 200ms ease-in-out, color 200ms ease-in-out;
+}
+
+.dark body {
+  background-color: #090d16;
+  color: #f1f5f9;
 }

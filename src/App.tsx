@@ -8,6 +8,15 @@ import AIToolCard from './components/AIToolCard';
 import StartupNewsFeed from './components/StartupNewsFeed';
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored === 'dark';
+      return false; // Light theme by default, togglable to high contrast dark
+    }
+    return false;
+  });
+
   const [tools, setTools] = useState<AITool[]>([]);
   const [startups, setStartups] = useState<StartupNews[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,6 +32,18 @@ export default function App() {
   // Simulated isHoliday states to allow live testing
   const [isHolidayMockActive, setIsHolidayMockActive] = useState<boolean>(false);
   const [showHolidayMode, setShowHolidayMode] = useState<boolean>(false);
+
+  // Sync dark class on document root
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (darkMode) {
+      root.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
 
   // Check if standard New Year Period operates (Dec 25 to Jan 10)
   const isActualNewYearPeriod = (): boolean => {
@@ -206,7 +227,7 @@ export default function App() {
   }).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-805 dark:text-slate-200 selection:bg-blue-600 selection:text-white transition-colors duration-200">
       
       {/* Top Banner indicating technical specs of crawler */}
       <div className="bg-slate-900 border-b border-slate-800 text-slate-300 text-xs py-3 px-4">
@@ -249,25 +270,27 @@ export default function App() {
           onToggleShowHolidayMode={() => setShowHolidayMode(!showHolidayMode)}
           favoritesCount={favorites.length}
           isCustomNewYearMode={isCustomNewYearMode}
+          darkMode={darkMode}
+          onToggleDarkMode={() => setDarkMode(!darkMode)}
         />
 
         {/* Dynamic Instruction info card about TatNet & GitHub actions */}
-        <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-2xl p-6 border border-blue-500/15 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 dark:from-blue-900/15 dark:to-indigo-900/15 rounded-2xl p-6 border border-blue-500/15 dark:border-blue-800/30 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div className="space-y-1 md:max-w-2xl">
-            <h4 id="quick-hint-title" className="font-bold text-slate-900 tracking-tight text-sm flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-blue-600" />
+            <h4 id="quick-hint-title" className="font-bold text-slate-900 dark:text-slate-100 tracking-tight text-sm flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               Интеграция с GitHub Actions & Деплой на TatNet
             </h4>
-            <p className="text-xs text-slate-600 leading-relaxed font-sans">
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-sans">
               Скрипт проверяет работоспособность каждого URL и встраивает новые ИИ на основе трендов GitHub, TatNet и YCombinator. Мы создали для вас подробные спецификации робота и деплоя внутри проекта.
             </p>
           </div>
           
           <button
             onClick={handleManualRecheck}
-            className="shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-white hover:bg-slate-50 text-slate-800 rounded-xl border border-slate-200 text-xs font-bold shadow-sm cursor-pointer hover:shadow transition-all duration-300"
+            className="shrink-0 inline-flex items-center gap-2 px-5 py-3 bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-805 dark:text-slate-200 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold shadow-sm cursor-pointer hover:shadow transition-all duration-300"
           >
-            <RefreshCw className="w-4 h-4 text-blue-600" />
+            <RefreshCw className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>Перепроверить пинг URL</span>
           </button>
         </div>
@@ -299,13 +322,13 @@ export default function App() {
             {/* Catalog list Container */}
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <p className="text-xs text-slate-500 font-semibold uppercase tracking-wider font-mono">
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider font-mono">
                   Результаты: {filteredTools.length} / {totalCount} инструментов найдено
                 </p>
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="text-xs text-blue-600 hover:underline cursor-pointer"
+                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
                   >
                     Сбросить поиск
                   </button>
@@ -313,8 +336,8 @@ export default function App() {
               </div>
 
               {filteredTools.length === 0 ? (
-                <div className="bg-white rounded-2xl border border-slate-100 p-12 text-center text-slate-400 space-y-3">
-                  <p className="text-base font-semibold">Ничего не найдено</p>
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800/80 p-12 text-center text-slate-400 dark:text-slate-500 space-y-3">
+                  <p className="text-base font-semibold text-slate-800 dark:text-slate-200">Ничего не найдено</p>
                   <p className="text-xs">Попробуйте изменить параметры поиска или активируйте другой фильтр.</p>
                 </div>
               ) : (
@@ -346,15 +369,15 @@ export default function App() {
       </div>
 
       {/* Footer copyright */}
-      <footer className="border-t border-slate-200/50 bg-white mt-20 py-8 text-xs text-slate-400">
+      <footer className="border-t border-slate-200/50 dark:border-slate-850 bg-white dark:bg-slate-900 mt-20 py-8 text-xs text-slate-400 dark:text-slate-500 transition-colors">
         <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="space-y-1">
-            <p className="font-bold text-slate-700">AI HUB 2.0 &copy; 2026. Лицензия MIT.</p>
+            <p className="font-bold text-slate-700 dark:text-slate-300">AI HUB 2.0 &copy; 2026. Лицензия MIT.</p>
             <p>Агрегатор технологических стартапов и инструментов искусственного интеллекта TatNet.</p>
           </div>
           <div className="flex flex-wrap justify-center items-center gap-4">
             <span>HappyNewYearBot/2.0</span>
-            <span className="text-slate-200">|</span>
+            <span className="text-slate-200 dark:text-slate-805">|</span>
             <span>SEO Оптимизировано (Google & Яндекс)</span>
           </div>
         </div>

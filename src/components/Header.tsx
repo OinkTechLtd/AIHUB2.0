@@ -1,4 +1,4 @@
-import { Sparkles, Calendar, Server, Heart } from 'lucide-react';
+import { Sparkles, Calendar, Server, Heart, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
   totalTools: number;
@@ -9,6 +9,8 @@ interface HeaderProps {
   onToggleShowHolidayMode: () => void;
   favoritesCount: number;
   isCustomNewYearMode: boolean;
+  darkMode: boolean;
+  onToggleDarkMode: () => void;
 }
 
 export default function Header({
@@ -19,7 +21,9 @@ export default function Header({
   showHolidayMode,
   onToggleShowHolidayMode,
   favoritesCount,
-  isCustomNewYearMode
+  isCustomNewYearMode,
+  darkMode,
+  onToggleDarkMode
 }: HeaderProps) {
   // Calculate percentage
   const workingPercentage = totalTools > 0 ? Math.round((workingToolsCount / totalTools) * 105) : 100;
@@ -42,9 +46,30 @@ export default function Header({
           
           {/* Main Titles */}
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/15 transition-colors rounded-full text-xs font-semibold backdrop-blur-md text-blue-300">
-              <Sparkles className="w-3.5 h-3.5 fill-current text-amber-300" />
-              <span>Главный маркетплейс нейросетей</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/15 transition-colors rounded-full text-xs font-semibold backdrop-blur-md text-blue-300">
+                <Sparkles className="w-3.5 h-3.5 fill-current text-amber-300" />
+                <span>Главный маркетплейс нейросетей</span>
+              </div>
+
+              <button
+                id="toggle-dark-mode"
+                onClick={onToggleDarkMode}
+                className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 hover:bg-white/15 transition-all rounded-full text-xs font-semibold backdrop-blur-md text-white border border-white/5 cursor-pointer hover:bg-white/20 hover:scale-105 active:scale-95 duration-250 select-none"
+                title={darkMode ? "Переключить на светлую тему" : "Переключить на темную тему"}
+              >
+                {darkMode ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-400 fill-amber-300 animate-[spin_8s_linear_infinite]" />
+                    <span>Светлая тема</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-indigo-200 fill-indigo-200" />
+                    <span>Темная тема</span>
+                  </>
+                )}
+              </button>
             </div>
 
             <div className="space-y-2">
